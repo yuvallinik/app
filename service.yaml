@@ -1,0 +1,14 @@
+apiVersion: v1  # API version
+kind: Service  # Resource type
+metadata:
+  name: python-app-service  # Service name
+  namespace: apps  # Namespace
+spec:
+  selector:
+    app: python-app  # Pod label selector
+  ports:
+    - protocol: TCP  # Protocol
+      port: 80  # Exposed port
+      targetPort: 5000  # Container port
+  type: LoadBalancer  # Expose via load balancer (Metallb)
+
