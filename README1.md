@@ -338,7 +338,7 @@ The NFS Subdir External Provisioner automates the creation and management of Per
 **Note**: Adjust configurations and IP addresses as needed to fit your setup.
 **Note**: The Persistent Volume (PV) will only be dynamically created once an application pod (e.g., a Deployment) that uses the PVC is deployed. Until then, you can observe the PVC in the `kubectl get pvc` output.
 
-This concludes the NFS Server and NFS Client Provisioner setup and testing. Adjust configurations as needed for your environment.
+### This concludes the NFS Server and NFS Client Provisioner setup and testing. Adjust configurations as needed for your environment.
 ---
 
 
@@ -496,7 +496,7 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
 
 4. **requirements.txt**:
    - Create a requirements.txt:
-     ```yaml
+     ```
     flask
      ```
 
@@ -504,7 +504,7 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
 
 
 5.  - Create a Deployment.yaml:
-     ```yaml
+     ```
     apiVersion: apps/v1
     kind: Deployment
     metadata:
