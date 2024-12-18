@@ -558,7 +558,7 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
             # Container port
       type: LoadBalancer  
         # Expose via load balancer (Metallb)
-    ```
+```
 
 7. **Apply the service.yaml Configuration**:
     ```bash
