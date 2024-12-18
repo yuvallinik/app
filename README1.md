@@ -91,7 +91,8 @@ Once these steps are completed, the management machine will have secure SSH acce
 
 1. **RKE Configuration**:
    - Create an `cluster.yml` file:
-    # Cluster Nodes
+### Cluster Nodes
+
 ```
 nodes:
   - address: <controlplane-node-ip>
@@ -214,14 +215,14 @@ monitoring:
 ---
 
 ### Step 2: Deploy Dynamic Storage Provisioner
-+++markdown
-# NFS Server and NFS Client Provisioner Setup Guide
+
+### NFS Server and NFS Client Provisioner Setup Guide
 
 This guide outlines the steps for installing and configuring an NFS Server and an NFS Client Provisioner in a Kubernetes cluster.
 
 ---
 
-## Installing the NFS Server
+### Installing the NFS Server
 
 1. **Update the System and Install NFS Server Packages**:
     ```bash
@@ -252,7 +253,7 @@ This guide outlines the steps for installing and configuring an NFS Server and a
 
 ---
 
-## Install NFS Client Packages on Kubernetes Nodes
+### Install NFS Client Packages on Kubernetes Nodes
 
 Ensure all Kubernetes nodes have the NFS client packages installed.
 
@@ -278,7 +279,7 @@ Ensure all Kubernetes nodes have the NFS client packages installed.
     ```
 ---
 
-## Install and Configure NFS Client Provisioner
+### Install and Configure NFS Client Provisioner
 
 The NFS Subdir External Provisioner automates the creation and management of Persistent Volumes (PVs) and Persistent Volume Claims (PVCs).
 
@@ -341,20 +342,20 @@ This concludes the NFS Server and NFS Client Provisioner setup and testing. Adju
 ---
 
 
-# Step 3 MetalLB Installation and Configuration Guide
+### Step 3 MetalLB Installation and Configuration Guide
 
 This guide explains how to install and configure MetalLB in Kubernetes for providing a Load Balancer solution in environments that lack native cloud load balancer integrations.
 
 ---
 
-## Prerequisites
+#### Prerequisites
 
 - A running Kubernetes cluster.
 - `kubectl` installed and configured to interact with your cluster.
 
 ---
 
-## Install MetalLB
+### Install MetalLB
 
 1. **Apply the MetalLB Manifests**:
     ```bash
@@ -376,7 +377,7 @@ This guide explains how to install and configure MetalLB in Kubernetes for provi
 
 ---
 
-## Configure IP Address Pool
+### Configure IP Address Pool
 
 1. **Create the MetalLB Configuration File**:
     Create a file named `metallb-config.yaml`:
@@ -404,7 +405,7 @@ This guide explains how to install and configure MetalLB in Kubernetes for provi
 
 ---
 
-## Configure L2 Advertisement
+### Configure L2 Advertisement
 
 1. **Create the L2Advertisement Configuration File**:
     Create a file named `L2Advertisement.yaml`:
@@ -432,7 +433,7 @@ This guide explains how to install and configure MetalLB in Kubernetes for provi
 
 ---
 
-## Summary
+### Summary
 
 After completing these steps:
 1. MetalLB is installed in your Kubernetes cluster.
@@ -565,7 +566,7 @@ This guide explains how to download an image file, rename it, and copy it to the
 
 ---
 
-## Navigate to the NFS Directory
+**Navigate to the NFS Directory**
 Verify that the Persistent Volume (PV) is created using the following command:
 ```
 kubectl get pv
@@ -578,7 +579,7 @@ cd /data/nfs
 
 ---
 
-## Download the Image
+**Download the Image**
 
 Use `wget` to download the image file(use can choose other links):
 
@@ -588,7 +589,7 @@ sudo wget https://thumbs.dreamstime.com/z/complete-stamp-icon-sign-stock-complet
 
 ---
 
-## Rename the Image File
+**Rename the Image File**
 
 The downloaded file contains special characters (`?ct=jpeg`). Rename it to `image.jpg`:
 
@@ -598,7 +599,7 @@ mv complete-stamp-icon-sign-stock-complete-stamp-icon-sign-161618814.jpg\?ct\=jp
 
 ---
 
-## Copy the Image to the PV Directory
+**Copy the Image to the PV Directory**
 Check the directory of the Persistent Volume (PV) created by the following command:
 ```
 ls
@@ -613,7 +614,7 @@ cp image.jpg <the directory that was created>
 
 ---
 
-## Summary
+### Summary
 
 - The image file was downloaded and renamed to `image.jpg`.
 - The file was copied to the NFS Persistent Volume directory .
@@ -622,13 +623,13 @@ You can now use this file within applications that utilize the NFS-mounted Persi
 
 
 
-# Accessing the Application and Image
+### Accessing the Application and Image
 
 After completing all the setup steps, you can now access your application and the image stored in the NFS Persistent Volume.
 
 ---
 
-## Check the External IP
+**Check the External IP**
 
 1. Use the following command to retrieve the `External IP` of your service:
     ```bash
@@ -639,7 +640,7 @@ After completing all the setup steps, you can now access your application and th
 
 ---
 
-## Open the Application in a Browser
+### Open the Application in a Browser
 
 1. Open your browser.
 2. Navigate to:
@@ -654,7 +655,7 @@ After completing all the setup steps, you can now access your application and th
 
 ---
 
-## Expected Result
+### Expected Result
 
 - The application will load in your browser.
 - The image stored in the NFS Persistent Volume will be displayed.
@@ -724,13 +725,13 @@ After completing all the setup steps, you can now access your application and th
    - Access the database using MongoDB Compass or write a Mongoose-based script.
 
 
-# Verifying MongoDB Connectivity and Creating a Collection
+### Verifying MongoDB Connectivity and Creating a Collection
 
 This guide explains how to verify MongoDB connectivity, connect to your database, and create a new collection using MongoDB Compass.
 
 ---
 
-## Step 1: Retrieve MongoDB External IP
+#### Step 1: Retrieve MongoDB External IP
 
 1. Run the following command to get the `External IP` of the MongoDB service:
     ```bash
@@ -740,7 +741,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Step 2: Install MongoDB Compass
+#### Step 2: Install MongoDB Compass
 
 1. Download and install **MongoDB Compass** from the official MongoDB website:  
    [https://www.mongodb.com/try/download/compass](https://www.mongodb.com/try/download/compass)
@@ -748,7 +749,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Step 3: Connect to MongoDB
+#### Step 3: Connect to MongoDB
 
 1. In MongoDB Compass, enter the connection string in the following format:
     ```
@@ -759,7 +760,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Step 4: Create a New Collection
+#### Step 4: Create a New Collection
 
 1. Once connected, navigate to your database.
 2. Click on **Create Collection**.
@@ -767,7 +768,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Step 5: Verify Persistent Volume Claim (PVC)
+#### Step 5: Verify Persistent Volume Claim (PVC)
 
 1. Check the PVC associated with your MongoDB deployment:
     ```bash
@@ -777,7 +778,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Summary
+### Summary
 
 After completing these steps:
 - You have verified connectivity to app.
@@ -790,7 +791,7 @@ Well done! You’ve successfully completed the steps, and everything is working 
 
 ---
 
-## Conclusion
+### Conclusion
 By completing these steps, you have successfully:
 - Set up a Kubernetes cluster using RKE.
 - Deployed applications using Helm.
