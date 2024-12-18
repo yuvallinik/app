@@ -92,7 +92,7 @@ Once these steps are completed, the management machine will have secure SSH acce
 1. **RKE Configuration**:
    - Create an `cluster.yml` file:
     # Cluster Nodes
-``
+```
 nodes:
   - address: <controlplane-node-ip>
     user: <ssh-user>
