@@ -497,10 +497,12 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
 4. **requirements.txt**:
    - Create a requirements.txt:
      ```
-    flask
+        flask
      ```
 
+
 **Note**: The requirements.txt file lists a project's Python dependencies, which can be installed using pip install -r requirements.txt.
+
 
 
 5.  - Create a Deployment.yaml:
@@ -533,8 +535,7 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
      ```
 
 6.   - Create a service.yaml:
-     ```yaml
-
+     ```
     apiVersion: v1  # API version
     kind: Service  # Resource type
     metadata:
