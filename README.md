@@ -214,6 +214,9 @@ monitoring:
 
 ---
 
+
+
+
 ### Step 2: Deploy Dynamic Storage Provisioner
 
 ### NFS Server and NFS Client Provisioner Setup Guide
@@ -342,6 +345,11 @@ The NFS Subdir External Provisioner automates the creation and management of Per
 ---
 
 
+
+
+
+
+
 ### Step 3 MetalLB Installation and Configuration Guide
 
 This guide explains how to install and configure MetalLB in Kubernetes for providing a Load Balancer solution in environments that lack native cloud load balancer integrations.
@@ -441,6 +449,12 @@ After completing these steps:
 3. Layer 2 advertisement is enabled, allowing MetalLB to assign IP addresses from the pool to services of type `LoadBalancer`.
 
 You can now create services of type `LoadBalancer` and observe that IP addresses from the configured pool are allocated.
+
+
+
+
+
+
 
 
 ### Step 4: Deploy Application
@@ -671,6 +685,11 @@ After completing all the setup steps, you can now access your application and th
 - The image stored in the NFS Persistent Volume will be displayed.
 
 **Congratulations!** The setup is complete, and your application is successfully serving the image from the NFS PV.
+
+
+
+
+
 
 
 ### Step 5: Deploy ArgoCD
