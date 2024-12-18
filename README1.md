@@ -42,11 +42,11 @@ Run the following command on the management machine to generate a new SSH key pa
 ssh-keygen -t rsa
 ```
 
-- You will be prompted to specify a file to save the key. Press `Enter` to use the default location (`~/.ssh/id\_rsa`).
+- You will be prompted to specify a file to save the key. Press `Enter` to use the default location (`~/.ssh/id_rsa`).
 - Set a passphrase (optional) or press `Enter` to skip.
 - Two files will be created:
-  - **Private Key**: `~/.ssh/id\_rsa` (keep this secure).
-  - **Public Key**: `~/.ssh/id\_rsa.pub`.
+  - **Private Key**: `~/.ssh/id_rsa` (keep this secure).
+  - **Public Key**: `~/.ssh/id_rsa.pub`.
 
 ---
 
@@ -97,47 +97,47 @@ nodes:
     role:
       - controlplane
       - etcd
-    ssh\_key\_path: <ssh-key-path>
-    docker\_socket: /var/run/docker.sock
+    ssh_key_path: <ssh-key-path>
+    docker_socket: /var/run/docker.sock
   - address: <controlplane-node-ip>
     user: <ssh-user>
     role:
       - worker
-    ssh\_key\_path: <ssh-key-path>
-    docker\_socket: /var/run/docker.sock
+    ssh_key_path: <ssh-key-path>
+    docker_socket: /var/run/docker.sock
   - address: <controlplane-node-ip>
     user: <ssh-user>
     role:
       - worker
-    ssh\_key\_path: <ssh-key-path>
-    docker\_socket: /var/run/docker.sock
+    ssh_key_path: <ssh-key-path>
+    docker_socket: /var/run/docker.sock
 
 # Name of the K8s Cluster
-cluster\_name: yuval-cluster
+cluster_name: yuval-cluster
 
 services:
   kube-api:
 # IP range for any services created on Kubernetes
-# This must match the service\_cluster\_ip\_range in kube-controller
-    service\_cluster\_ip\_range: 172.16.0.0/16
+# This must match the service_cluster_ip_range in kube-controller
+    service_cluster_ip_range: 172.16.0.0/16
 # Expose a different port range for NodePort services
-    service\_node\_port\_range: 30000-32767
-    pod\_security\_policy: false
+    service_node_port_range: 30000-32767
+    pod_security_policy: false
 
   kube-controller:
 # CIDR pool used to assign IP addresses to pods in the cluster
-    cluster\_cidr: 172.15.0.0/16
+    cluster_cidr: 172.15.0.0/16
 # IP range for any services created on Kubernetes
-# This must match the service\_cluster\_ip\_range in kube-api
-    service\_cluster\_ip\_range: 172.16.0.0/16
+# This must match the service_cluster_ip_range in kube-api
+    service_cluster_ip_range: 172.16.0.0/16
 
   kubelet:
 # Base domain for the cluster
-    cluster\_domain: cluster.local
+    cluster_domain: cluster.local
 # IP address for the DNS service endpoint
-    cluster\_dns\_server: 172.16.0.10
+    cluster_dns_server: 172.16.0.10
 # Fail if swap is on
-    fail\_swap\_on: false
+    fail_swap_on: false
 
 network:
   plugin: calico
@@ -163,10 +163,10 @@ monitoring:
      ```
 
 3. **Verify Node Status**:
-   - Copy the generated `kube\_config\_cluster.yml` to the management machine.
+   - Copy the generated `kube_config_cluster.yml` to the management machine.
    - Use `kubectl` to verify nodes:
      ```
-     export KUBECONFIG=kube\_config\_cluster.yml
+     export KUBECONFIG=kube_config_cluster.yml
      kubectl get nodes
      ```
    - If the nodes are not showing as 'Ready' status, please restart the machine.
