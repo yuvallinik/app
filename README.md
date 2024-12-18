@@ -42,11 +42,11 @@ Run the following command on the management machine to generate a new SSH key pa
 ssh-keygen -t rsa
 ```
 
-- You will be prompted to specify a file to save the key. Press `Enter` to use the default location (`~/.ssh/id&#95;rsa`).
+- You will be prompted to specify a file to save the key. Press `Enter` to use the default location (`~/.ssh/id_rsa`).
 - Set a passphrase (optional) or press `Enter` to skip.
 - Two files will be created:
-  - **Private Key**: `~/.ssh/id&#95;rsa` (keep this secure).
-  - **Public Key**: `~/.ssh/id&#95;rsa.pub`.
+  - **Private Key**: `~/.ssh/id_rsa` (keep this secure).
+  - **Public Key**: `~/.ssh/id_rsa.pub`.
 
 ---
 
@@ -88,56 +88,59 @@ Once these steps are completed, the management machine will have secure SSH acce
 +++
 
 ### Deployment Steps
+
 1. **RKE Configuration**:
    - Create an `cluster.yml` file:
-    # Cluster Nodes
+### Cluster Nodes
+
+```
 nodes:
   - address: <controlplane-node-ip>
     user: <ssh-user>
     role:
       - controlplane
       - etcd
-    ssh&#95;key&#95;path: <ssh-key-path>
-    docker&#95;socket: /var/run/docker.sock
+    ssh_key_path: <ssh-key-path>
+    docker_socket: /var/run/docker.sock
   - address: <controlplane-node-ip>
     user: <ssh-user>
     role:
       - worker
-    ssh&#95;key&#95;path: <ssh-key-path>
-    docker&#95;socket: /var/run/docker.sock
+    ssh_key_path: <ssh-key-path>
+    docker_socket: /var/run/docker.sock
   - address: <controlplane-node-ip>
     user: <ssh-user>
     role:
       - worker
-    ssh&#95;key&#95;path: <ssh-key-path>
-    docker&#95;socket: /var/run/docker.sock
+    ssh_key_path: <ssh-key-path>
+    docker_socket: /var/run/docker.sock
 
 # Name of the K8s Cluster
-cluster&#95;name: yuval-cluster
+cluster_name: yuval-cluster
 
 services:
   kube-api:
 # IP range for any services created on Kubernetes
-# This must match the service&#95;cluster&#95;ip&#95;range in kube-controller
-    service&#95;cluster&#95;ip&#95;range: 172.16.0.0/16
+# This must match the service-cluster-ip-range in kube-controller
+    service_cluster_ip_range: 172.16.0.0/16
 # Expose a different port range for NodePort services
-    service&#95;node&#95;port&#95;range: 30000-32767
-    pod&#95;security&#95;policy: false
+    service_node_port_range: 30000-32767
+    pod_security_policy: false
 
   kube-controller:
 # CIDR pool used to assign IP addresses to pods in the cluster
-    cluster&#95;cidr: 172.15.0.0/16
+    cluster_cidr: 172.15.0.0/16
 # IP range for any services created on Kubernetes
-# This must match the service&#95;cluster&#95;ip&#95;range in kube-api
-    service&#95;cluster&#95;ip&#95;range: 172.16.0.0/16
+# This must match the service-cluster-ip-range in kube-api
+    service_cluster_ip_range: 172.16.0.0/16
 
   kubelet:
 # Base domain for the cluster
-    cluster&#95;domain: cluster.local
+    cluster_domain: cluster.local
 # IP address for the DNS service endpoint
-    cluster&#95;dns&#95;server: 172.16.0.10
+    cluster_dns_server: 172.16.0.10
 # Fail if swap is on
-    fail&#95;swap&#95;on: false
+    fail_swap_on: false
 
 network:
   plugin: calico
@@ -154,7 +157,7 @@ authorization:
 # Specify monitoring provider (metrics-server)
 monitoring:
   provider: metrics-server
-
+```
 
 2. **Deploy the Cluster**:
    - Run the RKE command:
@@ -163,10 +166,10 @@ monitoring:
      ```
 
 3. **Verify Node Status**:
-   - Copy the generated `kube&#95;config&#95;cluster.yml` to the management machine.
+   - Copy the generated `kube_config_cluster.yml` to the management machine.
    - Use `kubectl` to verify nodes:
      ```
-     export KUBECONFIG=kube&#95;config&#95;cluster.yml
+     export KUBECONFIG=kube_config_cluster.yml
      kubectl get nodes
      ```
    - If the nodes are not showing as 'Ready' status, please restart the machine.
@@ -212,14 +215,14 @@ monitoring:
 ---
 
 ### Step 2: Deploy Dynamic Storage Provisioner
-+++markdown
-# NFS Server and NFS Client Provisioner Setup Guide
+
+### NFS Server and NFS Client Provisioner Setup Guide
 
 This guide outlines the steps for installing and configuring an NFS Server and an NFS Client Provisioner in a Kubernetes cluster.
 
 ---
 
-## Installing the NFS Server
+### Installing the NFS Server
 
 1. **Update the System and Install NFS Server Packages**:
     ```bash
@@ -250,7 +253,7 @@ This guide outlines the steps for installing and configuring an NFS Server and a
 
 ---
 
-## Install NFS Client Packages on Kubernetes Nodes
+### Install NFS Client Packages on Kubernetes Nodes
 
 Ensure all Kubernetes nodes have the NFS client packages installed.
 
@@ -276,7 +279,7 @@ Ensure all Kubernetes nodes have the NFS client packages installed.
     ```
 ---
 
-## Install and Configure NFS Client Provisioner
+### Install and Configure NFS Client Provisioner
 
 The NFS Subdir External Provisioner automates the creation and management of Persistent Volumes (PVs) and Persistent Volume Claims (PVCs).
 
@@ -335,24 +338,24 @@ The NFS Subdir External Provisioner automates the creation and management of Per
 **Note**: Adjust configurations and IP addresses as needed to fit your setup.
 **Note**: The Persistent Volume (PV) will only be dynamically created once an application pod (e.g., a Deployment) that uses the PVC is deployed. Until then, you can observe the PVC in the `kubectl get pvc` output.
 
-This concludes the NFS Server and NFS Client Provisioner setup and testing. Adjust configurations as needed for your environment.
+### This concludes the NFS Server and NFS Client Provisioner setup and testing. Adjust configurations as needed for your environment.
 ---
 
 
-# Step 3 MetalLB Installation and Configuration Guide
+### Step 3 MetalLB Installation and Configuration Guide
 
 This guide explains how to install and configure MetalLB in Kubernetes for providing a Load Balancer solution in environments that lack native cloud load balancer integrations.
 
 ---
 
-## Prerequisites
+#### Prerequisites
 
 - A running Kubernetes cluster.
 - `kubectl` installed and configured to interact with your cluster.
 
 ---
 
-## Install MetalLB
+### Install MetalLB
 
 1. **Apply the MetalLB Manifests**:
     ```bash
@@ -374,7 +377,7 @@ This guide explains how to install and configure MetalLB in Kubernetes for provi
 
 ---
 
-## Configure IP Address Pool
+### Configure IP Address Pool
 
 1. **Create the MetalLB Configuration File**:
     Create a file named `metallb-config.yaml`:
@@ -402,7 +405,7 @@ This guide explains how to install and configure MetalLB in Kubernetes for provi
 
 ---
 
-## Configure L2 Advertisement
+### Configure L2 Advertisement
 
 1. **Create the L2Advertisement Configuration File**:
     Create a file named `L2Advertisement.yaml`:
@@ -430,7 +433,7 @@ This guide explains how to install and configure MetalLB in Kubernetes for provi
 
 ---
 
-## Summary
+### Summary
 
 After completing these steps:
 1. MetalLB is installed in your Kubernetes cluster.
@@ -493,15 +496,17 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
 
 4. **requirements.txt**:
    - Create a requirements.txt:
-     ```yaml
-    flask
      ```
+        flask
+     ```
+
 
 **Note**: The requirements.txt file lists a project's Python dependencies, which can be installed using pip install -r requirements.txt.
 
 
+
 5.  - Create a Deployment.yaml:
-     ```yaml
+     ```
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -530,22 +535,30 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
      ```
 
 6.   - Create a service.yaml:
-     ```yaml
 
-    apiVersion: v1  # API version
-    kind: Service  # Resource type
+```
+    apiVersion: v1 
+    # API version
+    kind: Service 
+    # Resource type
     metadata:
-      name: python-app-service  # Service name
-      namespace: apps  # Namespace
+      name: python-app-service 
+        # Service name
+      namespace: apps  
+        # Namespace
     spec:
       selector:
-        app: python-app  # Pod label selector
+        app: python-app  
+        # Pod label selector
       ports:
-        - protocol: TCP  # Protocol
-          port: 80  # Exposed port
-          targetPort: 5000  # Container port
-      type: LoadBalancer  # Expose via load balancer (Metallb)
-     ```
+        - protocol: TCP  
+          port: 80  
+            # Exposed port
+          targetPort: 5000  
+            # Container port
+      type: LoadBalancer  
+        # Expose via load balancer (Metallb)
+```
 
 7. **Apply the service.yaml Configuration**:
     ```bash
@@ -563,7 +576,7 @@ This guide explains how to download an image file, rename it, and copy it to the
 
 ---
 
-## Navigate to the NFS Directory
+**Navigate to the NFS Directory**
 Verify that the Persistent Volume (PV) is created using the following command:
 ```
 kubectl get pv
@@ -576,7 +589,7 @@ cd /data/nfs
 
 ---
 
-## Download the Image
+**Download the Image**
 
 Use `wget` to download the image file(use can choose other links):
 
@@ -586,7 +599,7 @@ sudo wget https://thumbs.dreamstime.com/z/complete-stamp-icon-sign-stock-complet
 
 ---
 
-## Rename the Image File
+**Rename the Image File**
 
 The downloaded file contains special characters (`?ct=jpeg`). Rename it to `image.jpg`:
 
@@ -596,7 +609,7 @@ mv complete-stamp-icon-sign-stock-complete-stamp-icon-sign-161618814.jpg\?ct\=jp
 
 ---
 
-## Copy the Image to the PV Directory
+**Copy the Image to the PV Directory**
 Check the directory of the Persistent Volume (PV) created by the following command:
 ```
 ls
@@ -611,7 +624,7 @@ cp image.jpg <the directory that was created>
 
 ---
 
-## Summary
+### Summary
 
 - The image file was downloaded and renamed to `image.jpg`.
 - The file was copied to the NFS Persistent Volume directory .
@@ -620,13 +633,13 @@ You can now use this file within applications that utilize the NFS-mounted Persi
 
 
 
-# Accessing the Application and Image
+### Accessing the Application and Image
 
 After completing all the setup steps, you can now access your application and the image stored in the NFS Persistent Volume.
 
 ---
 
-## Check the External IP
+**Check the External IP**
 
 1. Use the following command to retrieve the `External IP` of your service:
     ```bash
@@ -637,7 +650,7 @@ After completing all the setup steps, you can now access your application and th
 
 ---
 
-## Open the Application in a Browser
+### Open the Application in a Browser
 
 1. Open your browser.
 2. Navigate to:
@@ -652,7 +665,7 @@ After completing all the setup steps, you can now access your application and th
 
 ---
 
-## Expected Result
+### Expected Result
 
 - The application will load in your browser.
 - The image stored in the NFS Persistent Volume will be displayed.
@@ -722,13 +735,13 @@ After completing all the setup steps, you can now access your application and th
    - Access the database using MongoDB Compass or write a Mongoose-based script.
 
 
-# Verifying MongoDB Connectivity and Creating a Collection
+### Verifying MongoDB Connectivity and Creating a Collection
 
 This guide explains how to verify MongoDB connectivity, connect to your database, and create a new collection using MongoDB Compass.
 
 ---
 
-## Step 1: Retrieve MongoDB External IP
+#### Step 1: Retrieve MongoDB External IP
 
 1. Run the following command to get the `External IP` of the MongoDB service:
     ```bash
@@ -738,7 +751,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Step 2: Install MongoDB Compass
+#### Step 2: Install MongoDB Compass
 
 1. Download and install **MongoDB Compass** from the official MongoDB website:  
    [https://www.mongodb.com/try/download/compass](https://www.mongodb.com/try/download/compass)
@@ -746,7 +759,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Step 3: Connect to MongoDB
+#### Step 3: Connect to MongoDB
 
 1. In MongoDB Compass, enter the connection string in the following format:
     ```
@@ -757,7 +770,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Step 4: Create a New Collection
+#### Step 4: Create a New Collection
 
 1. Once connected, navigate to your database.
 2. Click on **Create Collection**.
@@ -765,7 +778,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Step 5: Verify Persistent Volume Claim (PVC)
+#### Step 5: Verify Persistent Volume Claim (PVC)
 
 1. Check the PVC associated with your MongoDB deployment:
     ```bash
@@ -775,7 +788,7 @@ This guide explains how to verify MongoDB connectivity, connect to your database
 
 ---
 
-## Summary
+### Summary
 
 After completing these steps:
 - You have verified connectivity to app.
@@ -788,10 +801,12 @@ Well done! You’ve successfully completed the steps, and everything is working 
 
 ---
 
-## Conclusion
+### Conclusion
 By completing these steps, you have successfully:
 - Set up a Kubernetes cluster using RKE.
 - Deployed applications using Helm.
 - Integrated ArgoCD for GitOps.
 - Verified application and database functionality.
+
+
 
