@@ -535,7 +535,7 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
      ```
 
 6.   - Create a service.yaml:
-     ```
+    ```
     apiVersion: v1  # API version
     kind: Service  # Resource type
     metadata:
