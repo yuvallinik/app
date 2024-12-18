@@ -535,20 +535,29 @@ You can now create services of type `LoadBalancer` and observe that IP addresses
      ```
 
 6.   - Create a service.yaml:
-    ```
-    apiVersion: v1  # API version
-    kind: Service  # Resource type
+
+```
+    apiVersion: v1 
+    # API version
+    kind: Service 
+    # Resource type
     metadata:
-      name: python-app-service  # Service name
-      namespace: apps  # Namespace
+      name: python-app-service 
+        # Service name
+      namespace: apps  
+        # Namespace
     spec:
       selector:
-        app: python-app  # Pod label selector
+        app: python-app  
+        # Pod label selector
       ports:
-        - protocol: TCP  # Protocol
-          port: 80  # Exposed port
-          targetPort: 5000  # Container port
-      type: LoadBalancer  # Expose via load balancer (Metallb)
+        - protocol: TCP  
+          port: 80  
+            # Exposed port
+          targetPort: 5000  
+            # Container port
+      type: LoadBalancer  
+        # Expose via load balancer (Metallb)
     ```
 
 7. **Apply the service.yaml Configuration**:
